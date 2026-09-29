@@ -1,0 +1,5 @@
+# BDA-MH-K5 Project Dependencies
+pandas>=2.2.0
+numpy>=1.26.0
+kafka-python-ng>=2.2.0
+python-dateutil>=2.8.2

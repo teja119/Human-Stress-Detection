@@ -1,0 +1,806 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 100,
+      "panels": [],
+      "title": "BDA-MH-K5: Executive Overview KPI Cards",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "infinity",
+        "uid": "bda-infinity-ds"
+      },
+      "description": "Total Reddit posts ingested and analyzed across all subreddits",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 101,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "infinity",
+            "uid": "bda-infinity-ds"
+          },
+          "format": "table",
+          "rawQueryText": "SELECT COUNT(*) as total_posts FROM processed_stress_analytics",
+          "refId": "A",
+          "root_selector": "",
+          "source": "csv",
+          "type": "csv",
+          "url": "data/processed/processed_stress_analytics.csv"
+        }
+      ],
+      "title": "Total Posts Analyzed",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "infinity",
+        "uid": "bda-infinity-ds"
+      },
+      "description": "Overall percentage of analyzed posts exhibiting stress signals",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 45
+              },
+              {
+                "color": "red",
+                "value": 55
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "id": 102,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "/stress_flag/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "infinity",
+            "uid": "bda-infinity-ds"
+          },
+          "format": "table",
+          "rawQueryText": "SELECT (SUM(stress_flag)*100.0/COUNT(*)) as overall_stress_pct FROM processed_stress_analytics",
+          "refId": "A",
+          "source": "csv",
+          "type": "csv",
+          "url": "data/processed/processed_stress_analytics.csv"
+        }
+      ],
+      "title": "Overall Stress Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "infinity",
+        "uid": "bda-infinity-ds"
+      },
+      "description": "Total volume of posts with high annotator consensus agreement (confidence >= 0.80)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "id": 103,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/high_conf_stressed_posts/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "infinity",
+            "uid": "bda-infinity-ds"
+          },
+          "format": "table",
+          "rawQueryText": "SELECT COUNT(*) as high_conf_stressed FROM processed_stress_analytics WHERE stress_flag=1 AND high_confidence_flag=1",
+          "refId": "A",
+          "source": "csv",
+          "type": "csv",
+          "url": "data/processed/stress_features/daily_aggregated_metrics.csv"
+        }
+      ],
+      "title": "High-Confidence Stressed Posts",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "infinity",
+        "uid": "bda-infinity-ds"
+      },
+      "description": "Average Automated Readability Index (ARI) reflecting text complexity",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "teal"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "teal",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "id": 104,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "/avg_readability_index/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "infinity",
+            "uid": "bda-infinity-ds"
+          },
+          "format": "table",
+          "rawQueryText": "SELECT AVG(avg_readability_index) as avg_ari FROM processed_stress_analytics",
+          "refId": "A",
+          "source": "csv",
+          "type": "csv",
+          "url": "data/processed/processed_stress_analytics.csv"
+        }
+      ],
+      "title": "Mean Readability Index (ARI)",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 105,
+      "panels": [],
+      "title": "Core Analytics Panels",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "infinity",
+        "uid": "bda-infinity-ds"
+      },
+      "description": "Panel 1: Daily Stress Trend by Subreddit (entry_date vs stress_percentage, partitioned by subreddit)",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "auto",
+            "spanNulls": true
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "entry_date",
+              "text": "Time",
+              "type": "time"
+            },
+            {
+              "selector": "subreddit",
+              "text": "Subreddit",
+              "type": "string"
+            },
+            {
+              "selector": "stress_percentage",
+              "text": "Stress Percentage",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "infinity",
+            "uid": "bda-infinity-ds"
+          },
+          "format": "timeseries",
+          "rawQueryText": "SELECT entry_date AS time, subreddit AS metric, stress_percentage AS value FROM daily_aggregated_metrics ORDER BY entry_date ASC",
+          "refId": "Panel1_DailyTrend",
+          "root_selector": "",
+          "source": "csv",
+          "type": "csv",
+          "url": "data/processed/stress_features/daily_aggregated_metrics.csv"
+        }
+      ],
+      "title": "Panel 1 — Daily Stress Trend (By Subreddit)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "infinity",
+        "uid": "bda-infinity-ds"
+      },
+      "description": "Panel 2: Subreddit Stress Comparison (Compares stress percentage across anxiety, ptsd, relationships, domesticviolence, assistance, etc.)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Stress Percentage (%)",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "scheme",
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          },
+          "decimals": 1,
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 45
+              },
+              {
+                "color": "#EF843C",
+                "value": 55
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 2,
+      "options": {
+        "barRadius": 0.1,
+        "barWidth": 0.8,
+        "groupWidth": 0.7,
+        "legend": {
+          "displayMode": "hidden"
+        },
+        "orientation": "horizontal",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single"
+        },
+        "xField": "subreddit",
+        "yField": "stress_percentage"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "subreddit",
+              "text": "subreddit",
+              "type": "string"
+            },
+            {
+              "selector": "stress_percentage",
+              "text": "stress_percentage",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "infinity",
+            "uid": "bda-infinity-ds"
+          },
+          "format": "table",
+          "rawQueryText": "SELECT subreddit, stress_percentage FROM subreddit_summary ORDER BY stress_percentage DESC",
+          "refId": "Panel2_SubredditComparison",
+          "source": "csv",
+          "type": "csv",
+          "url": "data/processed/stress_features/subreddit_summary.csv"
+        }
+      ],
+      "title": "Panel 2 — Subreddit Stress Comparison",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "infinity",
+        "uid": "bda-infinity-ds"
+      },
+      "description": "Panel 3: Readability Complexity Distribution (Subreddit vs Average Automated Readability Index)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-purple",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisLabel": "Automated Readability Index (Grade Level)",
+            "fillOpacity": 85,
+            "lineWidth": 1
+          },
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 3,
+      "options": {
+        "barRadius": 0.1,
+        "barWidth": 0.8,
+        "groupWidth": 0.7,
+        "legend": {
+          "displayMode": "hidden"
+        },
+        "orientation": "horizontal",
+        "showValue": "always",
+        "stacking": "none",
+        "xField": "subreddit",
+        "yField": "avg_readability_index"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "subreddit",
+              "text": "subreddit",
+              "type": "string"
+            },
+            {
+              "selector": "avg_readability_index",
+              "text": "avg_readability_index",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "infinity",
+            "uid": "bda-infinity-ds"
+          },
+          "format": "table",
+          "rawQueryText": "SELECT subreddit, avg_readability_index FROM subreddit_summary ORDER BY avg_readability_index DESC",
+          "refId": "Panel3_Readability",
+          "source": "csv",
+          "type": "csv",
+          "url": "data/processed/stress_features/subreddit_summary.csv"
+        }
+      ],
+      "title": "Panel 3 — Readability Distribution (Avg ARI by Subreddit)",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "infinity",
+        "uid": "bda-infinity-ds"
+      },
+      "description": "Panel 4: Social Engagement Heatmap (Subreddit × Date, intensity driven by karma_engagement_ratio)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "scheme",
+            "scheme": "Spectral"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "id": 4,
+      "options": {
+        "calculate": false,
+        "cellGap": 1,
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Warm",
+          "steps": 64
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "tooltip": {
+          "show": true,
+          "yHistogram": false
+        },
+        "xField": "entry_date",
+        "yField": "subreddit"
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "entry_date",
+              "text": "entry_date",
+              "type": "string"
+            },
+            {
+              "selector": "subreddit",
+              "text": "subreddit",
+              "type": "string"
+            },
+            {
+              "selector": "avg_karma_ratio",
+              "text": "avg_karma_ratio",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "infinity",
+            "uid": "bda-infinity-ds"
+          },
+          "format": "table",
+          "rawQueryText": "SELECT entry_date, subreddit, avg_karma_ratio FROM daily_aggregated_metrics",
+          "refId": "Panel4_EngagementHeatmap",
+          "source": "csv",
+          "type": "csv",
+          "url": "data/processed/stress_features/daily_aggregated_metrics.csv"
+        }
+      ],
+      "title": "Panel 4 — Engagement Heatmap (Subreddit × Date)",
+      "type": "heatmap"
+    },
+    {
+      "datasource": {
+        "type": "infinity",
+        "uid": "bda-infinity-ds"
+      },
+      "description": "Panel 5: High-Confidence Stressed Posts over time and across subreddits (annotator consensus >= 0.80)",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 75,
+            "gradientMode": "opacity",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "showPoints": "never",
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "entry_date",
+              "text": "Time",
+              "type": "time"
+            },
+            {
+              "selector": "subreddit",
+              "text": "Subreddit",
+              "type": "string"
+            },
+            {
+              "selector": "high_conf_stressed_posts",
+              "text": "High Confidence Stressed Posts",
+              "type": "number"
+            }
+          ],
+          "datasource": {
+            "type": "infinity",
+            "uid": "bda-infinity-ds"
+          },
+          "format": "timeseries",
+          "rawQueryText": "SELECT entry_date AS time, subreddit AS metric, high_conf_stressed_posts AS value FROM daily_aggregated_metrics ORDER BY entry_date ASC",
+          "refId": "Panel5_HighConfStress",
+          "source": "csv",
+          "type": "csv",
+          "url": "data/processed/stress_features/daily_aggregated_metrics.csv"
+        }
+      ],
+      "title": "Panel 5 — High-Confidence Stress Volume (Consensus >= 0.80)",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [
+    "bda",
+    "stress-analytics",
+    "kafka",
+    "mapreduce",
+    "hadoop",
+    "dreaddit"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "infinity",
+          "uid": "bda-infinity-ds"
+        },
+        "definition": "SELECT DISTINCT subreddit FROM subreddit_summary",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "subreddit",
+        "options": [],
+        "query": "SELECT DISTINCT subreddit FROM subreddit_summary",
+        "refresh": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "2017-01-01T00:00:00.000Z",
+    "to": "2018-12-31T23:59:59.000Z"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Social Media Stress Analytics Dashboard (BDA-MH-K5)",
+  "uid": "bda-mh-k5-stress-analytics",
+  "version": 1,
+  "weekStart": ""
+}

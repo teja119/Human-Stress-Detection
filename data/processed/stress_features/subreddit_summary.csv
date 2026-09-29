@@ -1,0 +1,11 @@
+subreddit,total_posts,stressed_posts,stress_percentage,avg_readability_index,avg_karma_engagement_ratio,high_conf_stressed_posts
+domesticviolence,388,249,64.18,4.2052,1.5337,161
+anxiety,650,416,64.0,4.6218,1.535,317
+almosthomeless,99,59,59.6,4.7648,2.1325,42
+ptsd,711,414,58.23,4.8713,1.8491,284
+stress,78,45,57.69,5.6557,0.8981,33
+survivorsofabuse,315,143,45.4,5.4436,2.7339,84
+relationships,694,307,44.24,4.3685,1.5101,179
+food_pantry,43,17,39.53,3.9364,1.9194,11
+homeless,220,81,36.82,4.475,1.6388,53
+assistance,355,126,35.49,4.9184,1.4531,83
